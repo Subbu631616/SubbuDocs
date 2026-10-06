@@ -409,52 +409,18 @@ function renderPatch() {
   document.getElementById('patchEmpty').style.display = 'none';
   document.getElementById('patchContent').style.display = 'block';
 
-  const total = patchData.length;
-  const upToDate = patchData.filter(r => getUpdateStatus(r) === 'Up To Date').length;
-  const inProgress = patchData.filter(r => isInProgress(getUpdateStatus(r))).length;
-  const notUpToDate = patchData.filter(r => getUpdateStatus(r) === 'Not Up To Date').length;
-  const alerted = patchData.filter(r => parseInt(findCol(r, 'AlertCount', 'Alerts') || '0') > 0).length;
-  const compPct = total > 0 ? ((upToDate / total) * 100).toFixed(1) : 0;
-  const highRisk = patchData.filter(r => {
-    const s = getUpdateStatus(r);
-    const a = parseInt(findCol(r, 'AlertCount', 'Alerts') || '0');
-    return s === 'Not Up To Date' || a >= 3;
-  }).length;
-
   const target25H2 = patchData.filter(is25H2Target);
   const target25H2UpToDate = target25H2.filter(r => getUpdateStatus(r) === 'Up To Date').length;
   const target25H2InProgress = target25H2.filter(r => isInProgress(getUpdateStatus(r))).length;
   const target25H2NotUpToDate = target25H2.filter(r => getUpdateStatus(r) === 'Not Up To Date').length;
   const target25H2Pct = target25H2.length ? ((target25H2UpToDate / target25H2.length) * 100).toFixed(1) : 'N/A';
-  const target25H2PctValue = target25H2.length ? parseFloat(target25H2Pct) : 0;
-
   const target25H2Kpis = [
     { label: '25H2 Target Devices', value: target25H2.length.toLocaleString(), cls: '', key: 'target25H2' },
-    { label: '25H2 Up to Date', value: target25H2UpToDate.toLocaleString(), cls: 'kpi-green', key: 'target25H2UpToDate' },
+    { label: `25H2 Up to Date · ${target25H2Pct}% complete`, value: target25H2UpToDate.toLocaleString(), cls: 'kpi-green', key: 'target25H2UpToDate' },
     { label: '25H2 In Progress', value: target25H2InProgress.toLocaleString(), cls: 'kpi-amber', key: 'target25H2InProgress' },
-    { label: '25H2 Not up to Date', value: target25H2NotUpToDate.toLocaleString(), cls: 'kpi-red', key: 'target25H2NotUpToDate' },
-    { label: '25H2 Deployment Complete', value: target25H2.length ? target25H2Pct + '%' : 'N/A', cls: !target25H2.length ? '' : target25H2PctValue >= 95 ? 'kpi-green' : target25H2PctValue >= 85 ? 'kpi-amber' : 'kpi-red', key: 'target25H2' }
+    { label: '25H2 Not up to Date', value: target25H2NotUpToDate.toLocaleString(), cls: 'kpi-red', key: 'target25H2NotUpToDate' }
   ];
   document.getElementById('target25H2Kpis').innerHTML = target25H2Kpis.map(k => `
-    <div class="kpi-card ${k.cls}">
-      <div class="kpi-value">${k.value}</div>
-      <div class="kpi-label">${k.label}</div>
-      <button class="export-btn kpi-export" data-kpi-tab="patch" data-kpi-export="${k.key}">Export CSV</button>
-    </div>
-  `).join('');
-
-  const kpis = [
-    { label: 'Total Devices', value: total.toLocaleString(), cls: '', key: 'totalDevices' },
-    { label: 'Feature Update Compliance', value: compPct + '%', cls: parseFloat(compPct) >= 95 ? 'kpi-green' : parseFloat(compPct) >= 85 ? 'kpi-amber' : 'kpi-red', key: 'patchCompliance' },
-    { label: 'Up to Date', value: upToDate.toLocaleString(), cls: 'kpi-green', key: 'upToDate' },
-    { label: 'In Progress', value: inProgress.toLocaleString(), cls: 'kpi-amber', key: 'inProgress' },
-    { label: 'Not up to Date', value: notUpToDate.toLocaleString(), cls: 'kpi-red', key: 'notUpToDate' },
-    { label: 'Alerted Devices', value: alerted.toLocaleString(), cls: 'kpi-amber', key: 'alerted' },
-    { label: 'Feature Update High Risk', value: highRisk.toLocaleString(), cls: 'kpi-red', key: 'patchHighRisk' }
-  ];
-
-  const kpiGrid = document.getElementById('patchKpis');
-  kpiGrid.innerHTML = kpis.map(k => `
     <div class="kpi-card ${k.cls}">
       <div class="kpi-value">${k.value}</div>
       <div class="kpi-label">${k.label}</div>

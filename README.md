@@ -84,7 +84,7 @@ Alternatively, for a more detailed inventory export:
 | Tab | What it shows |
 |-----|--------------|
 | **Executive Summary** | Leadership headline, priority actions, stale device connectivity report, adjusted patch compliance (excl. stale devices), ISO 27001 evidence, end-of-support alerts |
-| **Patch Compliance** | Dedicated Windows 11 25H2 deployment counts and completion %, 25H2 exception devices, overall estate compliance, alerts by readiness, and non-compliant devices by target OS |
+| **Patch Compliance** | Four focused Windows 11 25H2 deployment cards, 25H2 exception devices, feature update status by target OS, alerts by readiness, and non-compliant devices by target OS |
 | **Windows Versions** | Supported OS %, ESU enrolled count, nearing end-of-support count, unsupported OS count, stale devices, version compliance chart, lifecycle posture chart, device review table |
 | **OS Lifecycle** | Windows 11 and Windows 10 lifecycle reference tables (Enterprise/Education dates), ESU coverage dates, unsupported OS device count with CSV export |
 
